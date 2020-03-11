@@ -1,0 +1,62 @@
+/*
+Problem Number: 2
+=================
+
+Task 1 : Implement the append(List lst, Node n) function which takes a
+linked list, and a Node and appends the given node to the linked list.
+
+Task 2 : Implement the insertAt(List lst, int pos) function which
+takes a linked list, a node and the position where the node should be
+inserted in the list, and returns the list with the node inserted at
+that position.
+*/
+struct Node{
+       Node next;
+       int val;
+}
+
+struct List{
+       Node head;
+}
+
+List append(List lst, Node n) {
+  // your code here
+}
+
+List insertAt(List lst, Node n, int pos) {
+  // your code here
+}
+
+
+
+List populate(List l) {
+  // this function adds a few nodes to an empty list.  This is used
+  // for providing input-output examples.
+  // returns: 5 -> 60
+  Node n2 = new Node(next = null, val = 60);
+  Node n1 = new Node(next = n2, val = 5);
+  l.head = n1;
+  return l;
+}
+
+
+harness void testAppend(){
+  List l = new List();
+  l = populate(l);
+  
+  // assert for append
+  Node n1 = new Node(next = null, val = 40);
+  List l1 = append(l, n1);
+  assert l1.head.next.next.val == 40;
+}
+
+
+harness void testInsert(){
+  List l = new List();
+  l = populate(l);
+
+  Node n1 = new Node(next = null, val = 70);
+  // assert for insertAt
+  List l2 = insertAt(l, n1, 1);
+  assert l2.head.next.val = 70;
+}

@@ -20,7 +20,11 @@ file 'product.cpp'.
 */
 
 generator int guessOp(int a, int b) {
-    return (b == 0 ? {| a (+ | - | *) b |} : {| a (+ | - | *) b |});
+    return (b == 0 ? {| a (+ | - | *) b |} : {| a (+ | - | * | /) b |});
+}
+
+generator void guessUpdate(ref int a, ref int b) {
+    {| a | b |} = {| guessOp(a, b) | guessOp(b, a) |};
 }
 
 int[M, Q] productSK(int M, int N, int P, int Q, int[M, N] a, int[P, Q] b) {
@@ -28,11 +32,11 @@ int[M, Q] productSK(int M, int N, int P, int Q, int[M, N] a, int[P, Q] b) {
        assert P == N;
        int sum = ??;
        int[M][N] prod;
-       for (int i = 0; i < ??; i += ??) {
-       	   for (int j = 0; j < ??; j += ??) {
+       for (int i = ??; i < ??; i += ??) {
+       	   for (int j = ??; j < ??; j += ??) {
 	       sum = ??;
-	       for (int k = 0; k < ??; k += ??) {
-		   //sum += a[i, k] * b[k, j];
+	       for (int k = ??; k < ??; k += ??) {
+		   //sum += guessOp(a[i, k], b[k, j]);
 		   sum += guessOp(a[i, k], b[k, j]);
 		   }
 	       prod[i][j] = sum;

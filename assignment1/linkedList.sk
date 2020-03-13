@@ -36,12 +36,14 @@ List append(List lst, Node n) {
 
 List insertAt(List lst, Node n, int pos) {
   Node itr = lst.head;
-  // Keep decrementing pos until it hits 0
+  // Keep decrementing pos until it hits 0 and iterate forward
   while((guessOp(pos, ??)) != ??) {
     $(Node) = $(Node);
   }
+  // Update nodes at insert position
   $(Node) = $(Node);
   itr.next = $(Node);
+  // Return list
   return $(List);
 }
 

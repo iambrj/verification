@@ -25,8 +25,8 @@ struct List{
 }
 
 List append(List lst, Node n) {
-  // your code here
   Node itr = lst.head;
+  // Keep iterating forward until you cannot
   while(itr.next != ??) {
     $(Node) = itr.next;
   }
@@ -35,8 +35,8 @@ List append(List lst, Node n) {
 }
 
 List insertAt(List lst, Node n, int pos) {
-  // your code here
   Node itr = lst.head;
+  // Keep decrementing pos until it hits 0
   while((guessOp(pos, ??)) != ??) {
     $(Node) = $(Node);
   }

@@ -35,6 +35,7 @@ List append(List lst, Node n) {
 }
 
 List insertAt(List lst, Node n, int pos) {
+  assert lst.head != null;
   Node itr = lst.head;
   // Keep decrementing pos until it hits 0 and iterate forward
   while((guessOp(pos, ??)) != ??) {

@@ -27,25 +27,22 @@ struct List{
 List append(List lst, Node n) {
   // your code here
   Node itr = lst.head;
-  //while(itr.next != ??) {
-  //  itr = itr.next;
-  //}
   while(itr.next != ??) {
-    itr = itr.next;
+    $(Node) = itr.next;
   }
   itr.next = $(Node);
-  return lst;
+  return $(List);
 }
 
 List insertAt(List lst, Node n, int pos) {
   // your code here
   Node itr = lst.head;
-  while(--pos != ??) {
-    itr = itr.next;
+  while((guessOp(pos, ??)) != ??) {
+    $(Node) = $(Node);
   }
-  n.next = itr.next;
-  itr.next = n;
-  return lst;
+  $(Node) = $(Node);
+  itr.next = $(Node);
+  return $(List);
 }
 
 

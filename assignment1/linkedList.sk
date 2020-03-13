@@ -38,8 +38,11 @@ List insertAt(List lst, Node n, int pos) {
   assert lst.head != null;
   Node itr = lst.head;
   // Keep decrementing pos until it hits 0 and iterate forward
-  while((guessOp(pos, ??)) != ??) {
+  while(((guessOp(pos, ??)) != ??) && (itr.next != null)) {
     $(Node) = $(Node);
+  }
+  if(itr.next == null && pos > 0) {
+    return null;
   }
   // Update nodes at insert position
   $(Node) = $(Node);

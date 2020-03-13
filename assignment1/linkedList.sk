@@ -25,6 +25,7 @@ struct List{
 }
 
 List append(List lst, Node n) {
+  assert lst.head != null;
   Node itr = lst.head;
   // Keep iterating forward until you cannot
   while(itr.next != ??) {

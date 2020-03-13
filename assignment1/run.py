@@ -36,4 +36,4 @@ with open("./log.json", "w") as fp:
     json.dump(log, fp)
 
 # execute the code
-result = subprocess.run(["sketch", "--fe-output-code", args.filePath, ])
+result = subprocess.run(["cpulimit", "-l", "50", "sketch", "--fe-output-code", "--bnd-inbits", "5", args.filePath])

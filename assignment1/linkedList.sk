@@ -21,12 +21,24 @@ struct List{
 
 List append(List lst, Node n) {
   // your code here
+  Node itr = lst.head;
+  while(itr.next != null) {
+    itr = itr.next;
+  }
+  itr.next = n;
+  return lst;
 }
 
 List insertAt(List lst, Node n, int pos) {
   // your code here
+  Node itr = lst.head;
+  while(--pos != 0) {
+    itr = itr.next;
+  }
+  n.next = itr.next;
+  itr.next = n;
+  return lst;
 }
-
 
 
 List populate(List l) {
@@ -58,5 +70,5 @@ harness void testInsert(){
   Node n1 = new Node(next = null, val = 70);
   // assert for insertAt
   List l2 = insertAt(l, n1, 1);
-  assert l2.head.next.val = 70;
+  assert (l2.head.next.val == 70);
 }

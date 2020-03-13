@@ -27,10 +27,13 @@ struct List{
 List append(List lst, Node n) {
   // your code here
   Node itr = lst.head;
+  //while(itr.next != ??) {
+  //  itr = itr.next;
+  //}
   while(itr.next != ??) {
     itr = itr.next;
   }
-  itr.next = n;
+  itr.next = $(Node);
   return lst;
 }
 

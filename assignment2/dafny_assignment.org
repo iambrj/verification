@@ -343,7 +343,7 @@ method Main()
 *** Transition System Definition
 *** Fibonacci Recursive Program
 #+BEGIN_SRC :tangle
-#function method fibo(x: nat): nat
+function method fibo(x: nat): nat
 decreases x
 {
    if x < 2 then x else fibo(x-1)+fibo(x-2)
@@ -373,53 +373,40 @@ function method pi(trip:StateSpace) : nat
 	(trip.b)
 }
 
-// Transition System
-method FiboRecTransitionSystem(initialState:StateSpace) returns (terminalState:StateSpace)
-    decreases initialState.a
+method baseCaseTransit(currentState:StateSpace) returns (terminalState:StateSpace)
 // pre-conditions:
-    requires initialState.a >= 0
-    requires initialState.b >= 0
-    requires initialState.c >= 1
-    requires initialState.d >= initialState.a
-    requires initialState.c >= initialState.b
+    requires currentState.a == 0
+    requires currentState.b == fibo(currentState.d)
+    requires currentState.c == fibo(currentState.d + 1)
+    requires currentState.d >= 0
 // post-conditions:
-    //ensures terminalState.b == fibo(initialState.d - initialState.a)
+    ensures terminalState.b == fibo(currentState.d)
 {
-    if initialState.a < 1
+    terminalState := StateSpace(0, currentState.b, currentState.c,
+                           currentState.d);
+}
+// Transition System
+method FiboRecTransitionSystem(currentState:StateSpace) returns (nextState:StateSpace)
+    decreases currentState.a
+// pre-conditions:
+    requires currentState.a >= 0
+    requires currentState.d >= currentState.a
+    requires currentState.b == fibo(currentState.d - currentState.a)
+    requires currentState.c == fibo(currentState.d - currentState.a + 1)
+    requires currentState.d >= 0
+// post-conditions:
+    ensures nextState.b == fibo(currentState.d)
+{
+    if currentState.a < 1
     {
-        terminalState := StateSpace(0, initialState.b, initialState.c,
-                               initialState.d);
-        //assert terminalState.b == fibo(initialState.d - initialState.a);
-        //print("initialState.d - initialState.a\t\t\t\tterminalState.b\t\tfibo(initialState.d - initialState.a)\n");
-        //print(initialState.d - initialState.a);
-        //print("\t\t\t");
-        //print(terminalState.b);
-        //print("\t\t\t");
-        //print(fibo(initialState.d - initialState.a));
-        //print("\n");
+        nextState := baseCaseTransit(currentState);
     }
     else
     {
-        terminalState := FiboRecTransitionSystem(StateSpace(initialState.a - 1,
-                                   initialState.c, initialState.b +
-                                   initialState.c, initialState.d));
-        //assert terminalState.b == fibo(initialState.d);
-        //print("initialState.a\t\t\tterminalState.b\t\tfibo(initialState.d)\n");
-        //print(initialState.d);
-        //print("\t\t\t");
-        //print(terminalState.b);
-        //print("\t\t\t");
-        //print(fibo(initialState.d));
-        //print("\n");
+        nextState := FiboRecTransitionSystem(StateSpace(currentState.a - 1,
+                                   currentState.c, currentState.b +
+                                   currentState.c, currentState.d));
     }
-    //assert terminalState.b == fibo(initialState.d);
-    //print("initialState.d\t\tterminalState.b\t\tfibo(initialState.d)\n");
-    //print(initialState.d);
-    //print("\t\t\t");
-    //print(terminalState.b);
-    //print("\t\t\t");
-    //print(fibo(initialState.d));
-    //print("\n");
 }
 
 // Orchestrator
@@ -430,14 +417,10 @@ method Main()
     while n <= 10
     {
         var inputParameters := InputSpace(n);
-        var initialState := rho(inputParameters);
-        var terminalState := FiboRecTransitionSystem(initialState);
+        var currentState := rho(inputParameters);
+        var terminalState := FiboRecTransitionSystem(currentState);
         var output:nat := pi(terminalState);
-        //assert output == fibo(n);
-        //print(output);
-        //print("\t");
-        //print(fibo(n));
-        //print("\n");
+        assert output == fibo(n);
         n := n + 1;
     }
 }

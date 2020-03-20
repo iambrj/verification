@@ -264,6 +264,24 @@ make use of a while / for loop as per the dafny
 syntax.
 
 *** Transition System Definition
+$S_{fiboIter} = <X,X^{o},U,\rightarrow,Y,h>$
+
+1. We define the state space of the system as $X = \mathbb{N} \times
+   \mathbb{N}\times \mathbb{N}$ (cross product of natural numbers three times).
+2. We define an initialization function $\rho: \mathbb{N}
+   \rightarrow X$, which converts the input space
+   to state space.
+3. $\rho(a) = X^o = (a,0,1)$.
+4. U = {next}
+5. Transition relation =def= $(a,b,c)
+   \xrightarrow[]{next} (a - 1, c, b + c)$ if a > 1 $
+6. Y = B, As the output space of the system is
+   equal to the output space of the problem.
+7. $h:X \rightarrow Y$, as $Y = B$ $\implies h:X
+   \rightarrow B$.
+8. $h(x) = x[1]$, where $x \in X$ and $x[1]$ is
+   the 2^{nd} element from the 3 tuple state
+   vector.
 *** Fibonacci Iterative Program
  #+BEGIN_SRC :tangle
 function method fibo(x: nat): nat
@@ -333,7 +351,16 @@ method Main()
  #+END_SRC
 
 *** Pre Conditions
+#+BEGIN_SRC
+requires initialState.a >= 0
+requires initialState.b == 0
+requires initialState.c == 1
+requires initialState.c >= initialState.b
+ #+END_SRC
 *** Post Conditions
+#+BEGIN_SRC
+ensures terminalState.b == fibo(initialState.a)
+ #+END_SRC
 ** Question 2
  Write a recursive program which computes the
  Fibonacci for a given integer. The program should
@@ -341,6 +368,24 @@ method Main()
  appropriate recursive structure.
 
 *** Transition System Definition
+$S_{fiboRec} = <X,X^{o},U,\rightarrow,Y,h>$
+
+1. We define the state space of the system as $X = \mathbb{N} \times
+   \mathbb{N}\times \mathbb{N}\times \mathbb{N}$ (cross product of natural numbers four times).
+2. We define an initialization function $\rho: \mathbb{N}
+   \rightarrow X$, which converts the input space
+   to state space.
+3. $\rho(a) = X^o = (a, 0, 1, a)$.
+4. U = {next}
+5. Transition relation =def= $(a,b,c,d)
+   \xrightarrow[]{next} (a - 1, c, b + c, d)$ if a > 1 $
+6. Y = B, As the output space of the system is
+   equal to the output space of the problem.
+7. $h:X \rightarrow Y$, as $Y = B$ $\implies h:X
+   \rightarrow B$.
+8. $h(x) = x[1]$, where $x \in X$ and $x[1]$ is
+   the 2^{nd} element from the 4 tuple state
+   vector.
 *** Fibonacci Recursive Program
 #+BEGIN_SRC :tangle
 unction method fibo(x: nat): nat
@@ -415,8 +460,18 @@ method Main()
 }
 #+END_SRC
 
+#+BEGIN_SRC :tangle
 *** Pre Conditions
+requires currentState.a >= 0
+requires currentState.d >= currentState.a
+requires currentState.b == fibo(currentState.d - currentState.a)
+requires currentState.c == fibo(currentState.d - currentState.a + 1)
+requires currentState.d >= 0
+#+END_SRC
 *** Post Conditions
+#+BEGIN_SRC :tangle
+ensures nextState.b == fibo(currentState.d)
+#+END_SRC
 ** Question 3
  Write a program for bubble sort which takes input
  as an integer array and produces a sorted array

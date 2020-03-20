@@ -343,7 +343,7 @@ method Main()
 *** Transition System Definition
 *** Fibonacci Recursive Program
 #+BEGIN_SRC :tangle
-function method fibo(x: nat): nat
+unction method fibo(x: nat): nat
 decreases x
 {
    if x < 2 then x else fibo(x-1)+fibo(x-2)
@@ -373,18 +373,6 @@ function method pi(trip:StateSpace) : nat
 	(trip.b)
 }
 
-method baseCaseTransit(currentState:StateSpace) returns (terminalState:StateSpace)
-// pre-conditions:
-    requires currentState.a == 0
-    requires currentState.b == fibo(currentState.d)
-    requires currentState.c == fibo(currentState.d + 1)
-    requires currentState.d >= 0
-// post-conditions:
-    ensures terminalState.b == fibo(currentState.d)
-{
-    terminalState := StateSpace(0, currentState.b, currentState.c,
-                           currentState.d);
-}
 // Transition System
 method FiboRecTransitionSystem(currentState:StateSpace) returns (nextState:StateSpace)
     decreases currentState.a
@@ -399,7 +387,8 @@ method FiboRecTransitionSystem(currentState:StateSpace) returns (nextState:State
 {
     if currentState.a < 1
     {
-        nextState := baseCaseTransit(currentState);
+        nextState := StateSpace(0, currentState.b, currentState.c,
+                               currentState.d);
     }
     else
     {
@@ -424,7 +413,7 @@ method Main()
         n := n + 1;
     }
 }
- #+END_SRC
+#+END_SRC
 
 *** Pre Conditions
 *** Post Conditions

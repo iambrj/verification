@@ -469,7 +469,7 @@ requires currentState.c == fibo(currentState.d - currentState.a + 1)
 requires currentState.d >= 0
 #+END_SRC
 *** Post Conditions
-#+BEGIN_SRC :tangle
+#+BEGIN_SRC
 ensures nextState.b == fibo(currentState.d)
 #+END_SRC
 ** Question 3
@@ -477,13 +477,116 @@ ensures nextState.b == fibo(currentState.d)
  as an integer array and produces a sorted array
  using bubble sort algorithm.
 *** Transition System Definition
+$S_{bubbleSort} = <X,X^{o},U,\rightarrow,Y,h>$
+
+1. We define the state space of the system as $X =$
+   array<nat> $\times \mathbb{N}$
+2. We define an initialization function $\rho: A
+   \rightarrow X$, which converts the input space
+   to state space.
+3. $\rho(a) = X^o = (a,b)$ where $a \in
+   \mathbb{N}$ and $b = a.Length - 1$
+4. U = {next}
+5. Transition relation =def= $(a,b)
+   \xrightarrow[]{next} (c,d) if $d == b - 1$, $sorted(a, b) == true$ and $sorted(c, d) == true$
+6. Y = array<nat>
+7. $h:X \rightarrow Y$
+8. $h(x) = x[0]$, where $x \in X$ and $x[0]$ is
+   the 1^{st} element from the 2 tuple state
+   vector.
 *** Bubble Sort Program
  #+BEGIN_SRC :tangle
+method bubbleSort(a : array<nat>)
+    modifies a
+{
+    var i := 0;
+    while (i < a.Length * a.Length)
+    {
+        if (i % a.Length < (i + 1) % a.Length && a[i % a.Length] > a[(i + 1) % a.Length])
+        {
+            a[i % a.Length], a[(i + 1) % a.Length] := a[(i + 1) % a.Length], a[i % a.Length];
+        }
+        i := i + 1;
+    }
+}
 
+// Input Space
+datatype InputSpace = InputSpace(a:array<nat>)
+
+// State Space
+datatype StateSpace = StateSpace(a:array<nat>, bubbleIdx:nat)
+
+/* Based on https://git.io/JvMjT */
+predicate sorted(state: StateSpace, begin: int, end: int)
+    reads state.a
+    requires state.a.Length > 0
+{
+    forall i, j :: 0 <= begin <= i <= j <= end < state.a.Length ==> state.a[i] <= state.a[j]
+}
+
+predicate bubbled(state: StateSpace, bubbleIdx: int)
+    reads state.a
+    requires state.a.Length > 0
+{
+    forall i, j :: 0 <= i <= bubbleIdx < j < state.a.Length ==> state.a[i] <= state.a[j]
+}
+
+method bubbleSortTransitionSystem(initialState : StateSpace) returns (terminalState:StateSpace)
+    modifies initialState.a
+    requires initialState.a.Length > 0
+    ensures terminalState.a.Length > 0
+    ensures sorted(terminalState, 0, terminalState.a.Length - 1)
+{
+    var bubbleIdx := initialState.a.Length - 1;
+    while(bubbleIdx > 0)
+        invariant bubbleIdx < 0 ==> initialState.a.Length == 0
+        invariant sorted(initialState, bubbleIdx, initialState.a.Length - 1)
+        invariant bubbled(initialState, bubbleIdx)
+        {
+            var i := 0;
+            while (i < bubbleIdx)
+                invariant 0 < bubbleIdx < initialState.a.Length && 0 <= i <= bubbleIdx
+                invariant sorted(initialState, bubbleIdx, initialState.a.Length - 1)
+                invariant bubbled(initialState, bubbleIdx)
+                invariant forall k :: 0 <= k <= i ==> initialState.a[k] <= initialState.a[i]
+                {
+                    if(initialState.a[i] > initialState.a[i + 1])
+                    {
+                        initialState.a[i], initialState.a[i + 1] := initialState.a[i + 1], initialState.a[i];
+                    }
+                    i := i + 1;
+                }
+                bubbleIdx := bubbleIdx - 1;
+        }
+    terminalState := initialState;
+}
+
+// Orchestrator
+method Main()
+{
+    var arr := new nat[5];
+    arr[0] := 5;
+    arr[1] := 4;
+    arr[2] := 3;
+    arr[3] := 2;
+    arr[4] := 1;
+    var inputParameters := InputSpace(arr);
+    var initialState := StateSpace(arr, 4);
+    var terminalState := bubbleSortTransitionSystem(initialState);
+    var output := terminalState.a;
+    assert sorted(StateSpace(output, output.Length - 1), 0, output.Length - 1) == true;
+}
  #+END_SRC
 
 *** Pre Conditions
+#+BEGIN_SRC
+requires initialState.a.Length > 0
+ #+END_SRC
 *** Post Conditions
+#+BEGIN_SRC
+ensures terminalState.a.Length > 0
+ensures sorted(terminalState, 0, terminalState.a.Length - 1)
+ #+END_SRC
 
 * Submission Guidelines
 ** Emacs Based Submission

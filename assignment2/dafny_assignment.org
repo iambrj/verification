@@ -58,7 +58,7 @@ $S_{max} = <X,X^{o},U,\rightarrow,Y,h>$
    the 3^{rd} element from the 3 tuple state
    vector.
 
-*** Program 
+*** Program
 
  #+BEGIN_SRC dafny :tangle max.dfy
 // Input Space
@@ -91,7 +91,7 @@ ensures terminalState.c > terminalState.b ==> terminalState.c >= terminalState.a
 ensures terminalState.c == terminalState.a ==> terminalState.c >= terminalState.b
 ensures terminalState.c == terminalState.b ==> terminalState.c >= terminalState.a
 ensures terminalState.c >= terminalState.a && terminalState.c >= terminalState.b
-ensures terminalState.a == terminalState.b ==> terminalState.c == terminalState.a 
+ensures terminalState.a == terminalState.b ==> terminalState.c == terminalState.a
         && terminalState.c == terminalState.b
 ensures initState.a > initState.b ==> terminalState.c == initState.a
 ensures initState.b > initState.a ==> terminalState.c == initState.b
@@ -138,7 +138,7 @@ Given a positive number, find it's factorial.
 2. The input as well as the outspace is
    $\mathbb{Z}$
 
-*** Transition System Definition 
+*** Transition System Definition
 1. $S_{fact} = <X,X^{o},U,\rightarrow,Y,h>$
 2. The state space of the system $X = \mathbb{Z}
    \times \mathbb{Z}$
@@ -209,7 +209,7 @@ method FactorialTransitions(initialState: StateSpace) returns (finalState: State
 	}
 	return StateSpace(i,f);
 	}
-	
+
 }
 
 // Converts state space to output space
@@ -235,23 +235,23 @@ method Main(){
 #+END_SRC
 *** Pre Condition
 + the input integer is always less than or equal to -1
-#+BEGIN_SRC 
+#+BEGIN_SRC
 requires x <= -1
 #+END_SRC
 *** Post Conditions
 
 +  ensure that every output value should be greater than or equal to zero
-#+BEGIN_SRC 
+#+BEGIN_SRC
 ensures 0 <= y
 #+END_SRC
 
 + ensure that if x is greater than or equal to zero, implies that x will be equal to y
-#+BEGIN_SRC 
+#+BEGIN_SRC
 ensures 0 <= x ==> x == y
 #+END_SRC
 
 +  ensure that if x is less than zero, implies that y will be a negation of x i.e. y = -(x)
-#+BEGIN_SRC 
+#+BEGIN_SRC
 ensures x < 0 ==> y == -x
 #+END_SRC
 

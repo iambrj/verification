@@ -6,15 +6,16 @@ Define the insertion sort algorithm as a transition system.
 $S_{insertionSort} = <X,X^{o},U,\rightarrow,Y,h>$
 
 1. We define the state space of the system as $X =$
-   array\<nat\> $\times \mathbb{N}$
+   array\<nat\> $\times \mathbb{N} $\times \mathbb{N}$
 2. We define an initialization function $\rho: array<nat>
    \rightarrow X$, which converts the input space
    to state space.
-3. $\rho(a) = X^o = (a, 0)$ where $a \in array<nat>$
+3. $\rho(a) = X^o = (a, 0, a.Length)$ where $a \in array<nat>$
 4. U = {next}
-5. Transition relation $(a,i) \xrightarrow[]{next} (a',i + 1) \iff \forall x\in
+5. Transition relation $(a,i,n) \xrightarrow[]{next} (a',i + 1,n) if \forall x\in
    [0, \alpha - 1], a'[x] = a[x]$ and $\forall x\in [\alpha + 1, i], a'[x + 1] =
-   a[x]$ where $\alpha = min\{k|(0 \le k < i) \land a[k] < a[i] \}$
+   a[x]$ where $\alpha = min\{k|(0 \le k < i) \land a[k] < a[i] \}$ and i < n;
+   else no transition i.e. terminal state.
 6. Y = array\<nat\>
 7. $h:X \rightarrow Y$
 8. $h(x) = x[0]$, where $x \in X$ and $x[0]$ is

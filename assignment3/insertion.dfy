@@ -66,19 +66,15 @@ method insertionSortTransitionSystem(initialState : StateSpace) returns (termina
     //ensures terminalState.a.Length > 0
     //ensures sorted(terminalState, 0, terminalState.a.Length - 1)
 {
-    var i := 0;
-    var  key, j;
+    var i := 1;
     while (i < initialState.a.Length)
     {
-        key := initialState.a[i];
-        j := i - 1;
-        while (j >= 0 && initialState.a[j] > key)
+        var j := i - 1;
+        while (j >= 0 && initialState.a[j] > initialState.a[j + 1])
         {
-            initialState.a[j + 1] := initialState.a[j];
-            initialState.a[j] := key;
+            initialState.a[j], initialState.a[j + 1] := initialState.a[j + 1], initialState.a[j];
             j := j - 1;
         }
-        //a[j + 1] := key;
         i := i + 1;
     }
     terminalState := initialState;

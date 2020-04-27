@@ -62,15 +62,19 @@ predicate bubbled(state: StateSpace, bubbleIdx: int)
 
 method insertionSortTransitionSystem(initialState : StateSpace) returns (terminalState:StateSpace)
     modifies initialState.a
-    //requires initialState.a.Length > 0
+    requires initialState.a.Length > 0
     //ensures terminalState.a.Length > 0
     //ensures sorted(terminalState, 0, terminalState.a.Length - 1)
 {
     var i := 1;
-    while (i < initialState.a.Length)
+    while (1 <= i < initialState.a.Length)
+        invariant 1 <= i <= initialState.a.Length
+        decreases initialState.a.Length - i
     {
         var j := i - 1;
         while (j >= 0 && initialState.a[j] > initialState.a[j + 1])
+            invariant j >= -1
+            invariant j >= 0 ==> sorted(initialState, j + 1, i)
         {
             initialState.a[j], initialState.a[j + 1] := initialState.a[j + 1], initialState.a[j];
             j := j - 1;

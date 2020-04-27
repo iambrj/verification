@@ -1,3 +1,29 @@
+#+TITLE: Assignment 3 - Program Verification Using Dafny
+
+** Task 1
+Define the insertion sort algorithm as a transition system.
+*** Transition System Definition
+$S_{insertionSort} = <X,X^{o},U,\rightarrow,Y,h>$
+
+1. We define the state space of the system as $X =$
+   array\<nat\> $\times \mathbb{N}$
+2. We define an initialization function $\rho: array<nat>
+   \rightarrow X$, which converts the input space
+   to state space.
+3. $\rho(a) = X^o = (a, 0)$ where $a \in array<nat>$
+4. U = {next}
+5. Transition relation $(a,i) \xrightarrow[]{next} (a',i + 1) \iff \forall x\in
+   [0, \alpha - 1], a'[x] = a[x]$ and $\forall x\in [\alpha + 1, i], a'[x + 1] =
+   a[x]$ where $\alpha = min\{k|(0 \le k < i) \land a[k] < a[i] \}$
+6. Y = array\<nat\>
+7. $h:X \rightarrow Y$
+8. $h(x) = x[0]$, where $x \in X$ and $x[0]$ is
+   the 1^{st} element from the 2 tuple state
+   vector.
+** Task 2
+Program the insertion sort algorithm in Dafny.
+*** Insertion Sort Program
+ #+BEGIN_SRC :tangle
 method insertionSort(a : array<nat>)
     modifies a
 {
@@ -91,3 +117,20 @@ method Main()
         x := x + 1;
     }
 }
+ #+END_SRC
+
+*** Pre Conditions
+#+BEGIN_SRC
+modifies initialState.a
+requires initialState.a.Length > 0
+#+END_SRC
+
+*** Post Conditions
+#+BEGIN_SRC
+ensures terminalState.a.Length > 0
+ensures multiset(initialState.a[..]) == multiset(terminalState.a[..])
+ensures sorted(terminalState, 0, terminalState.a.Length - 1)
+#+END_SRC
+
+** Task 3
+

@@ -180,4 +180,5 @@ This is sufficient for partial correctness.
 Observe that for total correctness, the boolean predicates $B$ for both inner
 and outer loop eventually become false as i and j keep incrementing and
 decrementing respectively, thus eventually terminating the loop. Hence, total
-correctness in ensured.
+correctness in ensured. The decreases statement on line 39 and line 50 reflect
+this.

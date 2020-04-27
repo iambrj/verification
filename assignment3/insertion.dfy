@@ -47,6 +47,7 @@ method insertionSortTransitionSystem(initialState : StateSpace) returns (termina
             invariant forall m, n :: 0 <= m <= j && j + 2 <= n <= i ==> initialState.a[m] <= initialState.a[n]
             invariant sorted(initialState, 0, j)
             invariant sorted(initialState, j + 2, i)
+            decreases j
         {
             initialState.a[j], initialState.a[j + 1] := initialState.a[j + 1], initialState.a[j];
             j := j - 1;

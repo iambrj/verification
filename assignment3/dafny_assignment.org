@@ -73,6 +73,7 @@ method insertionSortTransitionSystem(initialState : StateSpace) returns (termina
             invariant forall m, n :: 0 <= m <= j && j + 2 <= n <= i ==> initialState.a[m] <= initialState.a[n]
             invariant sorted(initialState, 0, j)
             invariant sorted(initialState, j + 2, i)
+            decreases j
         {
             initialState.a[j], initialState.a[j + 1] := initialState.a[j + 1], initialState.a[j];
             j := j - 1;
@@ -119,18 +120,43 @@ method Main()
 }
  #+END_SRC
 
-*** Pre Conditions
+** Task 3
+In your Dafny program, clearly illustrate the Hoare Logic Predicates that
+together demonstrate the partial and total correctness of your program, in-
+cluding any loop invariants. Compile the program with 0 errors to verify.
+You will be evaluated on the sufficiency and correctness of the program
+and the predicates implemented in the Dafny program.
+
+The preconditions in the Hoare triple are:
 #+BEGIN_SRC
 modifies initialState.a
 requires initialState.a.Length > 0
 #+END_SRC
-
-*** Post Conditions
+and the postconditions in the Hoare triple are:
 #+BEGIN_SRC
 ensures terminalState.a.Length > 0
 ensures multiset(initialState.a[..]) == multiset(terminalState.a[..])
 ensures sorted(terminalState, 0, terminalState.a.Length - 1)
 #+END_SRC
+For the outer loop, the invariant
+#+BEGIN_SRC
+invariant sorted(initialState, 0, i - 1)
+#+END_SRC
+is sufficient for partial correctness, and the invariant
+#+BEGIN_SRC
+decreases initialState.a.Length - i
+#+END_SRC
+is sufficient to prove total correctness.
 
-** Task 3
-
+For the inner loop, the invarints
+#+BEGIN_SRC
+invariant forall k :: j + 1 < k <= i ==> initialState.a[j + 1] < initialState.a[k]
+invariant forall m, n :: 0 <= m <= j && j + 2 <= n <= i ==> initialState.a[m] <= initialState.a[n]
+invariant sorted(initialState, 0, j)
+invariant sorted(initialState, j + 2, i)
+#+END_SRC
+are sufficient for partial correctness, and the invariant
+#+BEGIN_SRC
+decreases j
+#+END_SRC
+is sufficient to prove total correctness.

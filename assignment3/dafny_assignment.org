@@ -174,3 +174,10 @@ where,
 1. P = Logical and of preconditions
 2. S = lines 52-53 from insertion.dfy
 3. B = Condition on line 44
+
+This is sufficient for partial correctness.
+
+Observe that for total correctness, the boolean predicates $B$ for both inner
+and outer loop eventually become false as i and j keep incrementing and
+decrementing respectively, thus eventually terminating the loop. Hence, total
+correctness in ensured.

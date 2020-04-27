@@ -160,3 +160,17 @@ are sufficient for partial correctness, and the invariant
 decreases j
 #+END_SRC
 is sufficient to prove total correctness.
+
+Thus for outer loop, the Hoare logic is
+\infer{\{P\}\textrm{ while $B$ do $S$ done }\{\neg B\land P\}}{\{P\land B\}S\{P\}}
+where,
+1. P = Logical and of preconditions
+2. S = lines 43-47 from insertion.dfy
+3. B = Condition on line 38
+
+Similarly, for inner loop, the Hoare logic is
+\infer{\{P\}\textrm{ while $B$ do $S$ done }\{\neg B\land P\}}{\{P\land B\}S\{P\}}
+where,
+1. P = Logical and of preconditions
+2. S = lines 52-53 from insertion.dfy
+3. B = Condition on line 44
